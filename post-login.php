@@ -6,28 +6,27 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $action = test_input($_POST['action']);
 
     // Menyesuaikan aksi dan mengambil nilai parameter post lainnya
-    if ($action == 'loginAdmin') {
+    if ($action == 'login') {
         // Cek apakah ada data yg masih kosong
         if (isset($_POST['email']) && isset($_POST['password'])) {
             $email = test_input($_POST['email']);
             $password = test_input($_POST['password']);
-            // Hash password menggunakan SHA256
-            $password = hash('sha256', 'SM-' . $password);
+            // Hash password menggunakan fungsi SHA256 > Base64
+            $password = hashPassword($password);
 
-            // Mengambil data akun_admin
-            $sql = "SELECT * FROM akun_admin WHERE email = '$email' AND password = '$password'";
+            // Mengambil data akun_user
+            $sql = "SELECT * FROM akun_user WHERE email = '$email' AND password = '$password'";
             $result = mysqli_query($conn, $sql);
             $count = mysqli_num_rows($result);
 
-            // Cek apakah ada data admin
+            // Cek apakah ada data user
             if ($count == 1) {
                 $data = mysqli_fetch_array($result);
 
-                // Tambahkan data akun_admin ke response json
+                // Tambahkan data akun_user ke response json
                 $response['text_message'] = 'Login berhasil.';
-                $response['id_admin'] = $data['id_admin'];
-                $response['rule_admin'] = $data['rule'];
-                $response['name_admin'] = $data['nama_lengkap'];
+                $response['id_user'] = $data['id_user'];
+                $response['name_user'] = $data['nama'];
             } else {
                 $response['text_message'] = 'Login gagal.';
             }
@@ -37,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $response['text_message'] = 'Data masukan kurang lengkap.';
         }
     }
-    // Terdapat nilai parameter post yg masih kosong
+    // Terdapat nilai parameter post yg masih kosong 
     else {
         $response['text_message'] = 'Data masukan kurang lengkap.';
     }

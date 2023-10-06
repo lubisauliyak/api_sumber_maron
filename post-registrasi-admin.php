@@ -34,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         }
         // Tidak ada data yg kosong
         else {
-            // Hash password menggunakan SHA256
-            $password = hash('sha256', 'SM-' . $password);
+            // Hash password menggunakan fungsi SHA256 > Base64
+            $password = hashPassword($password);
 
             // Menambah data akun_admin yg baru
             $sql = "SELECT * FROM akun_admin WHERE nama_lengkap = '$nama' AND email = '$email' AND telepon = '$telepon' AND username ='$username'";

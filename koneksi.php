@@ -1,8 +1,8 @@
 <?php
 $servername = "localhost";
-$database = "u625466052_airmaroon";
-$username = "u625466052_airmaroon";
-$password = "Airmaroon123@";
+$database = "sumber_maron";
+$username = "sumber-maron";
+$password = "Tiketmaron123@";
 
 $conn = mysqli_connect($servername, $username, $password, $database);
 $response = array('code_response' => http_response_code());
@@ -18,4 +18,13 @@ function test_input($data)
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
+}
+
+function hashPassword($password)
+{
+    // Hash password dengan menggunakan SHA-256
+    $hashedPassword = hash('sha256', $password . '-SM');
+
+    // Kembalikan hasil dalam format Base64
+    return base64_encode($hashedPassword);
 }
